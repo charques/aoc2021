@@ -6,7 +6,7 @@ exports.sonarSimpleIncrements = function (report) {
         }
      }
     return increment;
-}
+};
 
 exports.sonarSlidingIncrements = function (report) {
     var increment = 0;
@@ -18,4 +18,4 @@ exports.sonarSlidingIncrements = function (report) {
         }
      }
     return increment;
-}
+};

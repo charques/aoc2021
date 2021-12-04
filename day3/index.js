@@ -17,23 +17,23 @@ exports.powerConsumption = function (input) {
     const epsilon = binaryArrayToInt(epsilonArray);
 
     return gamma * epsilon;
-}
+};
 
 exports.lifeSupportRating = function (input) {
     const matrix = input.map(x => parseBinary(x));
 
     function onesBitCriteria(x, y) {
-        return x >= y ? 1 : 0
+        return x >= y ? 1 : 0;
     }
     function cerosBitCriteria(x, y) {
-        return x < y ? 1 : 0
+        return x < y ? 1 : 0;
     }
 
     function calculateRating(toFilter, bitCriteriaFunction, index) {
         const summatoryColumns = toFilter.reduce((a, b) => a.map((x, i) => x + b[i]));
-        const bitCriteriaArray = summatoryColumns.map((x) => { return bitCriteriaFunction(x, toFilter.length/2) });
+        const bitCriteriaArray = summatoryColumns.map((x) => { return bitCriteriaFunction(x, toFilter.length/2); });
 
-        var filteredArray = toFilter.filter((item) => { return (item[index] == bitCriteriaArray[index]) });
+        var filteredArray = toFilter.filter((item) => { return (item[index] == bitCriteriaArray[index]); });
     
         if (filteredArray.length > 1) {
             return calculateRating(filteredArray, bitCriteriaFunction, index+1);
@@ -45,4 +45,4 @@ exports.lifeSupportRating = function (input) {
     var co2ScrubberRating = calculateRating(matrix, cerosBitCriteria, 0);
 
     return oxygenGeneratorRating * co2ScrubberRating;
-}
+};
