@@ -5,7 +5,7 @@ function binaryArrayToInt(binaryArray) {
     return parseInt(binaryArray.join(''), 2);
 }
 
-exports.powerConsumption = function (input) {
+function powerConsumption (input) {
     const numItems = input.length;
 
     const matrix = input.map(x => parseBinary(x));
@@ -17,9 +17,9 @@ exports.powerConsumption = function (input) {
     const epsilon = binaryArrayToInt(epsilonArray);
 
     return gamma * epsilon;
-};
+}
 
-exports.lifeSupportRating = function (input) {
+function lifeSupportRating (input) {
     const matrix = input.map(x => parseBinary(x));
 
     function onesBitCriteria(x, y) {
@@ -45,4 +45,9 @@ exports.lifeSupportRating = function (input) {
     var co2ScrubberRating = calculateRating(matrix, cerosBitCriteria, 0);
 
     return oxygenGeneratorRating * co2ScrubberRating;
+}
+
+module.exports = {
+    powerConsumption: powerConsumption,
+    lifeSupportRating: lifeSupportRating
 };

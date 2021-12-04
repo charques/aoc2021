@@ -1,10 +1,10 @@
 function parseCommand(command) {
-    const myRegex = /\w+/g
+    const myRegex = /\w+/g;
     const [comm, value] = command.match(myRegex);
     return [comm, parseInt(value)];
 }
 
-exports.submarinePosition = function (commands) {
+function submarinePosition (commands) {
     var horizontal = 0;
     var depth = 0;
     for(var i = 0; i < commands.length ; i++) {
@@ -24,7 +24,7 @@ exports.submarinePosition = function (commands) {
     return horizontal * depth;
 }
 
-exports.submarinePositionEnriched = function (commands) {
+function submarinePositionEnriched (commands) {
     var horizontal = 0;
     var depth = 0;
     var aim = 0;
@@ -45,3 +45,8 @@ exports.submarinePositionEnriched = function (commands) {
      }
     return horizontal * depth;
 }
+
+module.exports = {
+    submarinePosition: submarinePosition,
+    submarinePositionEnriched: submarinePositionEnriched
+};

@@ -1,4 +1,4 @@
-exports.sonarSimpleIncrements = function (report) {
+function sonarSimpleIncrements (report) {
     var increment = 0;
     for(var i = 1; i < report.length ; i++) {
         if(report[i] > report[i-1]) {
@@ -6,9 +6,9 @@ exports.sonarSimpleIncrements = function (report) {
         }
      }
     return increment;
-};
+}
 
-exports.sonarSlidingIncrements = function (report) {
+function sonarSlidingIncrements (report) {
     var increment = 0;
     for(var i = 2; i < report.length-1; i++) {
         var a1 = report[i-2] + report[i-1] + report[i];
@@ -18,4 +18,9 @@ exports.sonarSlidingIncrements = function (report) {
         }
      }
     return increment;
+}
+
+module.exports = {
+    sonarSimpleIncrements: sonarSimpleIncrements,
+    sonarSlidingIncrements: sonarSlidingIncrements
 };

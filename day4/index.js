@@ -80,7 +80,6 @@ function playUntilLastWin(boards, numbers) {
     var boardsWinTotal = Array(boards.length).fill(false);
     for (var i = 0; i < numbers.length; i++) {
         for(var j = 0; j < boards.length; j++) {
-            //console.log("number " + numbers[i])
             var markedBoard = markBoard(boards[j], numbers[i]);
             var boardWinResult = checkBoardWin(markedBoard);
             
@@ -96,7 +95,7 @@ function playUntilLastWin(boards, numbers) {
     return 0;
 }
 
-exports.calulateScoreWinningBoardFirstWin = function (input) {
+function calulateScoreWinningBoardFirstWin (input) {
     const numbers = parseNumbers(input[0]);
     const boards = parseBoards(input);
 
@@ -106,9 +105,9 @@ exports.calulateScoreWinningBoardFirstWin = function (input) {
     }
 
     return 0;
-};
+}
 
-exports.calulateScoreWinningBoardLastWin = function (input) {
+function calulateScoreWinningBoardLastWin(input) {
     const numbers = parseNumbers(input[0]);
     const boards = parseBoards(input);
 
@@ -117,4 +116,9 @@ exports.calulateScoreWinningBoardLastWin = function (input) {
         return result;
     }
     return 0;
+}
+
+module.exports = {
+    calulateScoreWinningBoardLastWin: calulateScoreWinningBoardLastWin,
+    calulateScoreWinningBoardFirstWin: calulateScoreWinningBoardFirstWin
 };

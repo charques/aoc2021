@@ -1,4 +1,4 @@
-var expect    = require("chai").expect;
+var expect = require("chai").expect;
 var fs = require("fs");
 var day3 = require("../day3/index");
 
