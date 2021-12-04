@@ -20,14 +20,11 @@ exports.powerConsumption = function (input) {
 }
 
 exports.lifeSupportRating = function (input) {
-    const numItems = input.length;
-
     const matrix = input.map(x => parseBinary(x));
 
     function onesBitCriteria(x, y) {
         return x >= y ? 1 : 0
     }
-
     function cerosBitCriteria(x, y) {
         return x < y ? 1 : 0
     }
