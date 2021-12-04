@@ -17,17 +17,7 @@ function parseBoards(rawInput) {
     return boards;
 }
 
-function markBoards(boards, number) {
-    for(var i = 0; i < boards.length; i++) {
-        var markedBoard = markBoard(boards[i], number);
-        var winObject = checkWin(markedBoard);
-        
-        if(winObject.win) {
-            return winObject.sum * number;
-        }
-    }
-    return 0;
-}
+
 
 function markBoard(board, number) {
     for(var i = 0; i < board.length; i++) {
@@ -40,7 +30,7 @@ function markBoard(board, number) {
     return board;
 }
 
-function checkWin(board) {
+function checkBoardWin(board) {
     function reducerRows(previous, current) {
         const value = previous[0] + ((!current[1]) ? current[0] : 0);
         const hit = previous[1] && current[1];
@@ -72,16 +62,59 @@ function checkWin(board) {
     };
 }
 
-exports.calulateScoreWinningBoard = function (input) {
+function playUntilFirstWin(boards, numbers) {
+    for (var i = 0; i < numbers.length; i++) {
+        for(var j = 0; j < boards.length; j++) {
+            var markedBoard = markBoard(boards[j], numbers[i]);
+            var winObject = checkBoardWin(markedBoard);
+            
+            if(winObject.win) {
+                return winObject.sum * numbers[i];
+            }
+        }
+    }
+    return 0;
+}
+
+function playUntilLastWin(boards, numbers) {
+    var boardsWinTotal = Array(boards.length).fill(false);
+    for (var i = 0; i < numbers.length; i++) {
+        for(var j = 0; j < boards.length; j++) {
+            //console.log("number " + numbers[i])
+            var markedBoard = markBoard(boards[j], numbers[i]);
+            var boardWinResult = checkBoardWin(markedBoard);
+            
+            if(boardWinResult.win) {
+                boardsWinTotal[j] = true;
+                var final = boardsWinTotal.reduce((a, b) => a && b, true);
+                if(final) {
+                    return boardWinResult.sum * numbers[i];
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+exports.calulateScoreWinningBoardFirstWin = function (input) {
     const numbers = parseNumbers(input[0]);
     const boards = parseBoards(input);
 
-    for (var i = 0; i < numbers.length; i++) {
-        var result = markBoards(boards, numbers[i]);
-        if(result > 0) {
-            return result;
-        }
-    };
+    var result = playUntilFirstWin(boards, numbers);
+    if(result > 0) {
+        return result;
+    }
 
+    return 0;
+};
+
+exports.calulateScoreWinningBoardLastWin = function (input) {
+    const numbers = parseNumbers(input[0]);
+    const boards = parseBoards(input);
+
+    var result = playUntilLastWin(boards, numbers);
+    if(result > 0) {
+        return result;
+    }
     return 0;
 };
