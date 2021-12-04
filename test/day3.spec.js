@@ -23,4 +23,11 @@ describe("Day 3 - Binary Diagnostic", function() {
     const consumption = day3.lifeSupportRating(input);
     expect(consumption).to.equal(230);
   });
+
+  it("test lifeSupportRating - input", function() {
+    const file = fs.readFileSync("./day3/input3-2.txt", "utf-8");
+    const input = file.split("\n");
+    const consumption = day3.lifeSupportRating(input);
+    expect(consumption).to.equal(587895);
+  });
 });
