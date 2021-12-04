@@ -1,6 +1,7 @@
 function parseNumbers(rawNumbers) {
     return (rawNumbers.split(',')).map(x => parseInt(x));
 }
+
 function parseBoards(rawInput) {
     let boards = [];
     var board = [];
@@ -17,59 +18,65 @@ function parseBoards(rawInput) {
     return boards;
 }
 
-
-
 function markBoard(board, number) {
-    for(var i = 0; i < board.length; i++) {
-        for(var j = 0; j < board[i].length; j++) {
-            if(board[i][j][0] == number) {
-                board[i][j][1] = true;
+    board.forEach(row => {
+        row.forEach(item => {
+            if(item[0] == number) {
+                item[1] = true;
             }
-        }
-    }
+        });
+    });
     return board;
 }
 
 function checkBoardWin(board) {
+    // reducer for rows - return tuple
+    //  - addition of all not marked positions
+    //  - boolean indicating if row is completelly marked
     function reducerRows(previous, current) {
         const value = previous[0] + ((!current[1]) ? current[0] : 0);
         const hit = previous[1] && current[1];
         return [value, hit];
     }
-    const rowsResults = board.map(x => x.reduce(reducerRows, [0, true]));
     
-    const columnsResults = board.reduce((a, b) => a.map((x, i) => {
-        var x1 = (!x[1]) ? x[0] : 0 + ((!b[i][1]) ? b[i][0] : 0);
-        var x2 = x[1] && b[i][1];
-        return [x1, x2];
-    }));
-
-    function reducerWin(previous, current) {
-        return previous || current[1];
+    // reducer for columns - return tuple
+    //  - addition of all not marked positions
+    //  - boolean indicating if column is completelly marked
+    function reducerColumns(previous, current) {
+        return previous.map((x, i) => {
+            var x1 = (!x[1]) ? x[0] : 0 + ((!current[i][1]) ? current[i][0] : 0);
+            var x2 = x[1] && current[i][1];
+            return [x1, x2];
+        });
     }
 
+    // reducer to sum non marked positions
     function reducerSumNonMarked(previous, current) {
         return previous + ((!current[1]) ? current[0] : 0);
     }
 
-    const concat = rowsResults.concat(columnsResults);
-    const win = concat.reduce(reducerWin, false);
-    const sum = rowsResults.reduce(reducerSumNonMarked, 0);
+    // detect hits per row and column
+    const rowsResults = board.map(x => x.reduce(reducerRows, [0, true]));
+    const columnsResults = board.reduce(reducerColumns);
+
+    // detect if a row or column is marked
+    const isWin = rowsResults.concat(columnsResults).reduce((previous, current) => (previous || current[1]), false);
+
+    // calc sum of all not marked positions
+    const sumNotMarked = rowsResults.reduce(reducerSumNonMarked, 0);
 
     return {
-        win: win,
-        sum: sum
+        isWin: isWin,
+        sumNotMarked: sumNotMarked
     };
 }
 
 function playUntilFirstWin(boards, numbers) {
-    for (var i = 0; i < numbers.length; i++) {
-        for(var j = 0; j < boards.length; j++) {
-            var markedBoard = markBoard(boards[j], numbers[i]);
-            var winObject = checkBoardWin(markedBoard);
-            
-            if(winObject.win) {
-                return winObject.sum * numbers[i];
+    for (const number of numbers) {
+        for (const board of boards) {
+            var boardMarkedResult = checkBoardWin(markBoard(board, number));
+            if(boardMarkedResult.isWin) {
+                return boardMarkedResult.sumNotMarked * number;
             }
         }
     }
@@ -77,17 +84,16 @@ function playUntilFirstWin(boards, numbers) {
 }
 
 function playUntilLastWin(boards, numbers) {
-    var boardsWinTotal = Array(boards.length).fill(false);
-    for (var i = 0; i < numbers.length; i++) {
-        for(var j = 0; j < boards.length; j++) {
-            var markedBoard = markBoard(boards[j], numbers[i]);
-            var boardWinResult = checkBoardWin(markedBoard);
+    var boardsWinCounter = Array(boards.length).fill(false);
+    for (const number of numbers) {
+        for (const [boardIndex, board] of boards.entries()) {
+            var boardMarkedResult = checkBoardWin(markBoard(board, number));
             
-            if(boardWinResult.win) {
-                boardsWinTotal[j] = true;
-                var final = boardsWinTotal.reduce((a, b) => a && b, true);
-                if(final) {
-                    return boardWinResult.sum * numbers[i];
+            if(boardMarkedResult.isWin) {
+                boardsWinCounter[boardIndex] = true;
+                var completed = boardsWinCounter.reduce((a, b) => a && b, true);
+                if(completed) {
+                    return boardMarkedResult.sumNotMarked * number;
                 }
             }
         }
