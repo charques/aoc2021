@@ -1,10 +1,7 @@
-const DAYS = 7;
-
 function parseInput(input) {
     const myRegex = /\w+/g;
     return input.match(myRegex).map(x => parseInt(x));
 }
-
 
 function calcLanternfish(input, days) {
     const state = parseInput(input);
@@ -12,35 +9,34 @@ function calcLanternfish(input, days) {
     function process(state) {
         let newA = [];
         let toAdd = 0;
-        state.forEach(item => {
-            if(item == 0) {
+        for (var i=0; i <state.length; i++) {
+            if(state[i] == 0) {
                 newA.push(6);
                 toAdd++;
             }
-            else if(item < 9) {
-                newA.push(item-1);
+            else if(state[i] < 9) {
+                newA.push(state[i]-1);
             }
-        });
+        }
         for (let step = 0; step < toAdd; step++) {
             newA.push(8);
         }
         return newA;
     }
 
-    function factorial(state, days) {
+    function recursive(days, state) {
         if (days == 0) {
             return state;
         }
         else {
-            const newState = process(state);
-            return factorial(newState, days - 1);
+            return recursive(days - 1, process(state));
         }
     }
 
-    let result = factorial(state, days);
-
+    let result = recursive(days, state);
     return result.length;
 }
+
 
 module.exports = {
     calcLanternfish: calcLanternfish
