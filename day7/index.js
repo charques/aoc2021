@@ -3,54 +3,44 @@ function parseInput(input) {
     return input.match(myRegex).map(x => parseInt(x));
 }
 
-function calcFuel(input, extended) {
-    const values = parseInput(input);
-
-    function compare( a, b ) {
-        return ( a > b ) ? -1 : 1;
-    }
-      
-    let ordered = values.sort( compare );
-
-    let minors = [];
-
-    ordered.forEach(baseElement => {
-        let count = 0;
-        if(baseElement == 5) {
-            console.log("xx");
-        }
-        ordered.forEach(element => {
-            var zz = element - baseElement;
-
-            if(! extended) {
-                count += Math.abs(zz);
-            }
-            else {
-                count += sumatorio(Math.abs(zz));
-            }
-        });
-        minors.push(count);
-    });
-
-    let shortedMinors = minors.sort( compare );
-
-    return shortedMinors[shortedMinors.length-1];
-}
-
-function sumatorio (n) {
+function summatory (n) {
 	var total = 0; 
-	for (i=1; i<=n; i++) {
-		total = total + i; 
+	for (var i = 1; i <= n; i++) {
+		total += i; 
 	}
-	return total; 
+	return total;
 }
 
-//1 + 2 + 3 + 4 + 5
+function calcByIndex(positions, index, applySummatory) {
+    var difference = 0;
+    var count = 0;
+    positions.forEach(((element) => {
+        difference = Math.abs(element - index);
+        count = (!applySummatory) ? count + difference : count + summatory(difference);
+    }));
+    return count;
+}
 
+function calcFuel(input, applySummatory) {
+    const values = parseInput(input);
+      
+    let orderedPositions = values.sort((a, b) => ( a > b ) ? -1 : 1);
+    let fuelCosts = [];
+    let prev = 0;
+    for(var i = 0; i < orderedPositions[0]; i++) {
+        var count = calcByIndex(orderedPositions, i, applySummatory);
+        fuelCosts[i] = count;
+        if ((prev > 0) && (count > prev)) {
+            break;
+        }
+        prev = count;
+    }
 
+    let shortedFuelCosts = fuelCosts.sort((a, b) => ( a > b ) ? 1 : -1);
 
+    return shortedFuelCosts[0];
+}
 
 module.exports = {
-    calcFuel: calcFuel,
-    sumatorio: sumatorio
+    calcFuel: calcFuel
 };
