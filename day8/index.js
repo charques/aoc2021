@@ -122,20 +122,6 @@ function countFourDigitsOutput2(line, calculatedSignalPatterns) {
     return parseInt(result.join(""));
 }
 
-function processLine1(line) {
-    const calculatedSignalPatterns = detectSignalPatternsPerLine(line);
-    const outputDigitsCount = countFourDigitsOutput1(line, calculatedSignalPatterns);
-
-    return outputDigitsCount;
-}
-
-function processLine2(line) {
-    const calculatedSignalPatterns = detectSignalPatternsPerLine(line);
-    const outputDigitsCount = countFourDigitsOutput2(line, calculatedSignalPatterns);
-
-    return outputDigitsCount;
-}
-
 function prepareBaseOutput(digitsToCount) {
     var r = [];
     digitsToCount.forEach((element) => {
@@ -157,9 +143,9 @@ function countTimesDigit1(input, digitsToCount) {
     let lines = parseInput(input);
     let output = prepareBaseOutput(digitsToCount);
 
-    var lineCount = null;
     lines.forEach(line => {
-        lineCount = processLine1(line);
+        var calculatedSignalPatterns = detectSignalPatternsPerLine(line);
+        var lineCount = countFourDigitsOutput1(line, calculatedSignalPatterns);
         output = addToOutput(output, lineCount);
     });
 
@@ -171,7 +157,8 @@ function countTimesDigit2(input) {
 
     var lineCount = 0;
     lines.forEach(line => {
-        lineCount += processLine2(line);
+        var calculatedSignalPatterns = detectSignalPatternsPerLine(line);
+        lineCount += countFourDigitsOutput2(line, calculatedSignalPatterns);
     });
 
     return lineCount;
