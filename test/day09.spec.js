@@ -2,7 +2,7 @@ var expect = require("chai").expect;
 var fs = require("fs");
 var day9 = require("../day9/index");
 
-describe("Day 9 - Smoke Basin", function() {
+describe("Day 09 - Smoke Basin", function() {
 
   it("test lowPointsRiskLevels - example 0", function() {
     const file = fs.readFileSync("./day9/input9-0.txt", "utf-8");

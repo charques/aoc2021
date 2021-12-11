@@ -2,7 +2,7 @@ var expect = require("chai").expect;
 var fs = require("fs");
 var day8 = require("../day8/index");
 
-describe("Day 8 - Seven Segment Search", function() {
+describe("Day 08 - Seven Segment Search", function() {
 
   it("test countTimesDigit - example 0", function() {
     const file = fs.readFileSync("./day8/input8-base.txt", "utf-8");

@@ -2,7 +2,7 @@ var expect = require("chai").expect;
 var fs = require("fs");
 var day3 = require("../day3/index");
 
-describe("Day 3 - Binary Diagnostic", function() {
+describe("Day 03 - Binary Diagnostic", function() {
   it("test powerConsumption - example", function() {
     const file = fs.readFileSync("./day3/input3-1.txt", "utf-8");
     const input = file.split("\n");

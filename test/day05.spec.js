@@ -2,7 +2,7 @@ var expect = require("chai").expect;
 var fs = require("fs");
 var day5 = require("../day5/index");
 
-describe("Day 5 - Hydrothermal Venture", function() {
+describe("Day 05 - Hydrothermal Venture", function() {
   it("test calulateOverlapsSimple - example", function() {
     const file = fs.readFileSync("./day5/input5-1.txt", "utf-8");
     const input = file.split("\n");

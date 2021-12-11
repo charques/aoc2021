@@ -2,7 +2,7 @@ var expect    = require("chai").expect;
 var fs = require("fs");
 var day2 = require("../day2/index");
 
-describe("Day 2 - Dive", function() {
+describe("Day 02 - Dive", function() {
   it("test submarinePosition - example", function() {
     const commands = ['forward 5', 'down 5', 'forward 8', 'up 3', 'down 8', 'forward 2'];
     const position = day2.submarinePosition(commands);

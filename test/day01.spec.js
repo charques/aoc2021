@@ -2,7 +2,7 @@ var expect    = require("chai").expect;
 var fs = require("fs");
 var day1 = require("../day1/index");
 
-describe("Day 1 - Sonar Sweep", function() {
+describe("Day 01 - Sonar Sweep", function() {
   it("test sonarSimpleIncrements - example", function() {
     const report = [199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
     const increments = day1.sonarSimpleIncrements(report);

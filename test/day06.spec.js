@@ -3,7 +3,7 @@ var fs = require("fs");
 var day6Recursive = require("../day6/index-recursive");
 var day6Better = require("../day6/index-better");
 
-describe("Day 6 - Lanternfish", function() {
+describe("Day 06 - Lanternfish", function() {
 
   it("test calcLanternfish RECURSIVE - 18 - example1", function() {
     const input = fs.readFileSync("./day6/input6-0.txt", "utf-8");

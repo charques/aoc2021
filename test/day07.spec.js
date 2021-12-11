@@ -2,7 +2,7 @@ var expect = require("chai").expect;
 var fs = require("fs");
 var day7 = require("../day7/index");
 
-describe("Day 7 - The Treachery of Whales", function() {
+describe("Day 07 - The Treachery of Whales", function() {
 
   it("test calcFuel - example1", function() {
     const input = fs.readFileSync("./day7/input7-0.txt", "utf-8");

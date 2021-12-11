@@ -2,7 +2,7 @@ var expect = require("chai").expect;
 var fs = require("fs");
 var day4 = require("../day4/index");
 
-describe("Day 4 - Giant Squid", function() {
+describe("Day 04 - Giant Squid", function() {
   it("test calulateScoreWinningBoardFirstWin - example", function() {
     const file = fs.readFileSync("./day4/input4-1.txt", "utf-8");
     const input = file.split("\n");
