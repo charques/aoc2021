@@ -27,9 +27,6 @@ function resetMatrix(matrix) {
     for(var i = 0; i < matrix.length; i++) {
         for(var j = 0; j < matrix[i].length; j++) {
             let element = matrix[i][j];
-            if(element[1] == TO_FLASH) {
-                console.log("error");
-            }
             element[1] = STANDBY;
         }
     }
@@ -56,7 +53,7 @@ function checkCoord(matrix, x, y) {
 function applyFlashToCoord(matrix, x, y) {
     if(checkCoord(matrix, x, y)) {
         let item = matrix[x][y];
-        if(item[1] != FLASHED) { // TO FLASH ALSO?
+        if((item[1] != FLASHED) && (item[1] != TO_FLASH)) {
             item[0] += 1;
             item[1] = (item[0] > 9) ? TO_FLASH : STANDBY;
             matrix[x][y] = item;
@@ -67,9 +64,7 @@ function applyFlashToCoord(matrix, x, y) {
 
 function executeFlash(matrix, toFlashCoord) {
     let item = matrix[toFlashCoord.x][toFlashCoord.y];
-    if(item[0] > 10) {
-        console.log("m 10");
-    }
+    
     matrix[toFlashCoord.x][toFlashCoord.y] = [item[0]-10, FLASHED];
     matrix = applyFlashToCoord(matrix, toFlashCoord.x-1, toFlashCoord.y-1);
     matrix = applyFlashToCoord(matrix, toFlashCoord.x, toFlashCoord.y-1);
@@ -97,11 +92,8 @@ function calcFlashes(input, steps) {
             for(var j = 0; j < toFlash.length; j++) {
                 matrix = executeFlash(matrix, toFlash[j]);
             }
-            console.log(matrix);
         } while(true);
     }
-
-    console.log(matrix);
     return numFlashes;
 }
 

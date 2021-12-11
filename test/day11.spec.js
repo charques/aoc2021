@@ -22,10 +22,10 @@ describe("Day 11 - Dumbo Octopus", function() {
     const file = fs.readFileSync("./day11/input11-0.txt", "utf-8");
     const input = file.split("\n");
     const score = day11.calcFlashes(input, 3);
-    expect(score).to.equal(35);
+    expect(score).to.equal(80);
   });
 
-  /*it("test calcFlashes - example 0", function() {
+  it("test calcFlashes - example 0", function() {
     const file = fs.readFileSync("./day11/input11-0.txt", "utf-8");
     const input = file.split("\n");
     const score = day11.calcFlashes(input, 10);
@@ -37,6 +37,13 @@ describe("Day 11 - Dumbo Octopus", function() {
     const input = file.split("\n");
     const score = day11.calcFlashes(input, 100);
     expect(score).to.equal(1656);
-  });*/
+  });
+
+  it("test calcFlashes - example 0", function() {
+    const file = fs.readFileSync("./day11/input11-1.txt", "utf-8");
+    const input = file.split("\n");
+    const score = day11.calcFlashes(input, 100);
+    expect(score).to.equal(1627);
+  });
 
 });
