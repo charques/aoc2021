@@ -77,24 +77,52 @@ function executeFlash(matrix, toFlashCoord) {
     return matrix;
 }
 
+function calcFirstSync(resultObj) {
+    let first = 0;
+    for(var i = 0; i < resultObj.numFlashesPerStep.length; i++) {
+      if(resultObj.numFlashesPerStep[i] == 100) {
+        first = i;
+        break;
+      }
+    }
+    return first + 1;
+}
+
 function calcFlashes(input, steps) {
     let matrix = createMatrix(input);
 
-    let numFlashes = 0;
+    let numFlashesPerStepArray = [];
+    let numFlashesTotal = 0;
+    let numFlashesPerStepTotal = 0;
 
+    // iterate steps
     for(var i = 0; i < steps; i++) {
         matrix = resetMatrix(matrix);
         matrix = incStep(matrix);
         do {
             let toFlash = getPendingToFlash(matrix);
-            numFlashes += toFlash.length;
-            if(toFlash.length == 0) break;
+            // calc results
+            numFlashesTotal += toFlash.length;
+            numFlashesPerStepTotal += toFlash.length;
+            if(toFlash.length == 0) {
+                numFlashesPerStepArray.push(numFlashesPerStepTotal);
+                numFlashesPerStepTotal = 0;
+                break;
+            }
+            // execute flashes
             for(var j = 0; j < toFlash.length; j++) {
                 matrix = executeFlash(matrix, toFlash[j]);
             }
         } while(true);
     }
-    return numFlashes;
+
+    // results
+    let result = {
+        numFlashes: numFlashesTotal,
+        numFlashesPerStep: numFlashesPerStepArray,
+        firstSync: numFlashesPerStepArray.indexOf(100) + 1
+    };
+    return result;
 }
 
 module.exports = {
