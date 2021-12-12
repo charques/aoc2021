@@ -1,18 +1,13 @@
 function createTransitions(input) {
     let transitions = new Map();
+    let tArray = [];
     input.forEach(element => {
-        let tArray = element.split("-");
-        if(tArray[1] == "start") {
+        tArray = element.split("-");
+        if((tArray[1] == "start") || (tArray[0] == "end")){
             insertMap(transitions, tArray[1], tArray[0]);
         }
-        else if(tArray[0] == "start") {
+        else if((tArray[0] == "start") || (tArray[1] == "end")) {
             insertMap(transitions, tArray[0], tArray[1]);
-        }
-        else if(tArray[1] == "end") {
-            insertMap(transitions, tArray[0], tArray[1]);
-        }
-        else if(tArray[0] == "end") {
-            insertMap(transitions, tArray[1], tArray[0]);
         }
         else {
             insertMap(transitions, tArray[0], tArray[1]);
@@ -33,19 +28,16 @@ function insertMap(map, key, value) {
     }
 }
 
-function findPaths(path, transitions, from, finalResult, allowOneTwice) {
-    let possibleTransitions = transitions.get(from);
-    if(possibleTransitions != null) {
-        let filteredPossibleTransitions = filterTransitions(path, possibleTransitions, allowOneTwice);
-        if(filteredPossibleTransitions != null) {
-            for(var i = 0; i < filteredPossibleTransitions.length; i++) {
-                var res = [...path];
-                res.push(filteredPossibleTransitions[i]);
-                //console.log(res);
-                findPaths(res, transitions, filteredPossibleTransitions[i], finalResult, allowOneTwice);
-            }
-        }
-    }
+function findPaths(path, possibleCaveMovesMap, fromCave, finalResult, allowOneSmallCaveTwice) {
+    let possibleCaveMoves = possibleCaveMovesMap.get(fromCave);
+    let filteredPossibleCaveMoves = filterPossibleCaveMoves(path, possibleCaveMoves, allowOneSmallCaveTwice);
+
+    filteredPossibleCaveMoves.forEach(nextCave => {
+        var newPath = [...path];
+        newPath.push(nextCave);
+        findPaths(newPath, possibleCaveMovesMap, nextCave, finalResult, allowOneSmallCaveTwice);
+    });
+    
     if(path[path.length-1] == "end") {
         //  console.log("final --- " + path);
         finalResult.push(path);
@@ -53,43 +45,46 @@ function findPaths(path, transitions, from, finalResult, allowOneTwice) {
     return finalResult;
 }
 
-function filterTransitions(path, transitions, allowOneTwice) {
-    let filteredTransitions = [];
-    transitions.forEach(transition => {
-        if(canCaveBeVisited(path, transition, allowOneTwice)) {
-            filteredTransitions.push(transition);
-        }
-    });
-    return filteredTransitions;
+function filterPossibleCaveMoves(path, possibleCaveMoves, allowOneSmallCaveTwice) {
+    let filteredCaveMoves = [];
+    if(possibleCaveMoves) {
+        possibleCaveMoves.forEach(caveMove => {
+            if(canCaveBeVisited(path, caveMove, allowOneSmallCaveTwice)) {
+                filteredCaveMoves.push(caveMove);
+            }
+        });
+    } 
+    return filteredCaveMoves;
 }
 
-function canCaveBeVisited(path, cave, allowOneTwice) {
-    if(path.length > 1) {
-        if(!allowOneTwice) {
-            for (var i = 0; i < path.length; i++) {
-                if ((path[i] == cave) && isLower(cave)) {
-                    return false;
-                }
-            }
+function canCaveBeVisited(path, cave, allowOneSmallCaveTwice) {
+    if(path.length <= 1) return true;
+
+    if(!allowOneSmallCaveTwice) {
+        if(path.includes(cave) && isLower(cave)) {
+            return false;
         }
-        else {
-            if(isLower(cave) && (cave != "end")) {
-                let counter = [];
-                let counterOverTwo = 0;
-                counter[cave] = 1;
-                for (var j = 0; j < path.length; j++) {
-                    if(isLower(path[j])) {
-                        let item = counter[path[j]];
-                        counter[path[j]] = (item != null) ? item + 1 : 1;
-                        if (counter[path[j]] == 2) {
-                            counterOverTwo++;
-                            if(counterOverTwo > 1) {
-                                return false;
-                            } 
-                        }
-                        else if (counter[path[j]] == 3) {
+    }
+    else {
+        if(isLower(cave) && (cave != "end")) {
+            let counter = [];
+            let counterOverTwo = 0;
+            counter[cave] = 1;
+            for (var j = 0; j < path.length; j++) {
+                if(isLower(path[j])) {
+                    let item = counter[path[j]];
+                    counter[path[j]] = (item != null) ? item + 1 : 1;
+
+                    // avoid a second cave to be visited 2 times
+                    if (counter[path[j]] == 2) {
+                        counterOverTwo++;
+                        if(counterOverTwo > 1) {
                             return false;
-                        }
+                        } 
+                    }
+                    // avoid the same cave to be visited 3 times
+                    else if (counter[path[j]] == 3) {
+                        return false;
                     }
                 }
             }
@@ -102,10 +97,10 @@ function isLower(str) {
     return /[a-z]/.test(str) && !/[A-Z]/.test(str);
 }
 
-function calcPaths(input, allowOneTwice) {
+function calcPaths(input, allowOneSmallCaveTwice) {
     let finalResult = [];
     let transitions = createTransitions(input);
-    findPaths(["start"], transitions, "start", finalResult, allowOneTwice);
+    findPaths(["start"], transitions, "start", finalResult, allowOneSmallCaveTwice);
     return finalResult.length;
 }
 
