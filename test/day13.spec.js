@@ -36,7 +36,7 @@ describe("Day 13 - Transparent Origami", function() {
     const file = fs.readFileSync("./day13/input13-1.txt", "utf-8");
     const input = file.split("\n");
     const result = day13.visibleDotsComplete(input);
-    expect(result).to.equal(701);
+    expect(result).to.equal(96);
   });
 
 });
