@@ -18,11 +18,18 @@ describe("Day 14 - Extended Polymerization", function() {
     expect(result).to.equal(3906);
   });
 
-  /*it("test calc - example 1", function() {
+  it("test calc - example 0a", function() {
+    const file = fs.readFileSync("./day14/input14-0a.txt", "utf-8");
+    const input = file.split("\n");
+    const result = day14.calc2(input, 10);
+    expect(result).to.equal(1588);
+  });
+
+  it("test calc - example 1", function() {
     const file = fs.readFileSync("./day14/input14-1.txt", "utf-8");
     const input = file.split("\n");
-    const result = day14.calc(input, 40);
-    expect(result).to.equal(3906);
-  });*/
+    const result = day14.calc2(input, 40);
+    expect(result).to.equal(4441317262452);
+  });
 
 });
